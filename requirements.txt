@@ -1,0 +1,16 @@
+# Core framework (project created with Django 5.2.6)
+Django==5.2.6
+
+# Read DATABASE_URL in settings.py
+dj-database-url>=2.1,<3.0
+
+# Static files serving via WhiteNoiseMiddleware in settings.py
+whitenoise>=6.6,<7.0
+
+# ---- Optional (only needed depending on how you deploy) ----
+
+# Production WSGI server (Linux / Cloud Run / Render / Heroku, etc.)
+gunicorn>=21.2,<23.0
+
+# PostgreSQL driver (install this if DATABASE_URL points to Postgres)
+psycopg2-binary>=2.9.9,<3.0
