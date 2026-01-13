@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', '烏魚子.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MulletRoe.settings')
 
 application = get_wsgi_application()
