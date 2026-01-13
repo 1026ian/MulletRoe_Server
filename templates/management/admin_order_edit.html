@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div
+    style="max-width: 800px; margin: 60px auto; padding: 28px; background: #fff; border-radius: 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.08);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="margin: 0;">編輯訂單 #{{ order.id }}</h2>
+        <span style="font-size: 14px; color: #666;">下單時間：{{ order.created_date|date:"Y-m-d H:i:s" }}</span>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- 訂單狀態管理 -->
+        <h3 style="margin-bottom: 12px; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px;">1. 訂單狀態
+        </h3>
+        <div style="display: flex; gap: 24px; margin-bottom: 24px;">
+            <div style="flex: 1;">
+                <label style="display: block; margin-bottom: 6px; font-weight: 500;">處理狀態</label>
+                <select name="state" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    {% for state_option in states %}
+                    <option value="{{ state_option }}" {% if order.state == state_option %}selected{% endif %}>{{ state_option }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div style="flex: 1; display: flex; align-items: center;">
+                <label style="display: flex; align-items: center; cursor: pointer; margin-top: 24px;">
+                    <input type="checkbox" name="paid" {% if order.paid %}checked{% endif %}
+                        style="width: 20px; height: 20px; margin-right: 10px;">
+                    <span style="font-size: 16px; font-weight: 500;">已付款</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- 收件人資訊 -->
+        <h3 style="margin-bottom: 12px; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px;">2. 收件資訊
+        </h3>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">收件人姓名</label>
+            <input type="text" name="receiver_name" value="{{ order.receiver_name }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">收件人電話</label>
+            <input type="text" name="receiver_phone" value="{{ order.receiver_phone }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 24px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">收件地址</label>
+            <input type="text" name="address" value="{{ order.address }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <!-- 付款資訊 -->
+        <h3 style="margin-bottom: 12px; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px;">3. 付款資訊
+        </h3>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">付款人姓名</label>
+            <input type="text" name="payment_name" value="{{ order.payment_name }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">付款人電話</label>
+            <input type="text" name="payment_phone" value="{{ order.payment_phone }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 24px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">帳號末五碼</label>
+            <input type="text" name="account_last_5" value="{{ order.account_last_5 }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="text-align: right; display: flex; justify-content: flex-end; gap: 16px;">
+            <a href="{% url 'admin_orders' %}"
+                style="padding: 10px 24px; background: #eee; color: #333; text-decoration: none; border-radius: 8px;">取消</a>
+            <button type="submit" class="btn-primary" style="min-width: 150px;">儲存變更</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

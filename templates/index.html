@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<style>
+    .hero {
+        position: relative;
+        width: 80%;
+        height: 60vh;
+        max-height: 500px;
+        margin: 0 auto 40px;
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        background: #f9f9f9;
+    }
+
+    .hero-slides {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hero-slide {
+        min-width: 100%;
+        height: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .hero-dots {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+        z-index: 10;
+    }
+
+    .hero-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .hero-dot.active {
+        background: #fff;
+        transform: scale(1.2);
+    }
+
+    /* 之前的隱藏數量按鈕樣式 */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+</style>
+
+<section class="hero">
+    <div class="hero-slides" id="hero-slides">
+        <div class="hero-slide" style="background-image: url('{% static 'images/封面.jpg' %}');"></div>
+        <div class="hero-slide" style="background-image: url('{% static 'images/曬4.jpg' %}');"></div>
+        <div class="hero-slide" style="background-image: url('{% static 'images/搬 曬.jpg' %}');"></div>
+        <div class="hero-slide" style="background-image: url('{% static 'images/嬤曬.jpg' %}');"></div>
+        <div class="hero-slide" style="background-image: url('{% static 'images/曬1.jpg' %}');"></div>
+        <div class="hero-slide" style="background-image: url('{% static 'images/曬3.jpg' %}');"></div>
+        <div class="hero-slide" style="background-image: url('{% static 'images/曬5.jpg' %}');"></div>
+        <div class="hero-slide" style="background-image: url('{% static 'images/曬6.jpg' %}');"></div>
+    </div>
+    <div class="hero-dots" id="hero-dots">
+        <div class="hero-dot active" onclick="goToSlide(0)"></div>
+        <div class="hero-dot" onclick="goToSlide(1)"></div>
+        <div class="hero-dot" onclick="goToSlide(2)"></div>
+        <div class="hero-dot" onclick="goToSlide(3)"></div>
+        <div class="hero-dot" onclick="goToSlide(4)"></div>
+        <div class="hero-dot" onclick="goToSlide(5)"></div>
+        <div class="hero-dot" onclick="goToSlide(6)"></div>
+        <div class="hero-dot" onclick="goToSlide(7)"></div>
+    </div>
+</section>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.getElementById('hero-slides');
+    const dots = document.querySelectorAll('.hero-dot');
+    const totalSlides = 8;
+
+    function goToSlide(index) {
+        currentSlide = index;
+        slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentSlide);
+        });
+    }
+
+    function autoSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        goToSlide(currentSlide);
+    }
+
+    setInterval(autoSlide, 7000);
+</script>
+
+<section class="products">
+    {% for p in products %}
+    <div class="product">
+        <img src="{% static p.image_path %}">
+        <h3>{{ p.name|replace_newline }}</h3>
+        <p>NT$ {{ p.price }}</p>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
+            <button onclick="decrementQty({{ p.id }})"
+                style="width: 32px; height: 32px; border: 1px solid #ddd; background: #fff; border-radius: 4px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;">-</button>
+            <input type="number" id="qty-{{ p.id }}" value="1" min="1"
+                style="width: 50px; text-align: center; border: 1px solid #ddd; border-radius: 4px; padding: 4px; -moz-appearance: textfield;">
+            <button onclick="incrementQty({{ p.id }})"
+                style="width: 32px; height: 32px; border: 1px solid #ddd; background: #fff; border-radius: 4px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center;">+</button>
+        </div>
+        <button onclick="addToCart({{ p.id }})" class="btn-primary"
+            style="width: 100%; border: none; cursor: pointer; padding: 12px;">加入購物車</button>
+    </div>
+    {% endfor %}
+</section>
+
+<script>
+    function incrementQty(id) {
+        const input = document.getElementById('qty-' + id);
+        input.value = parseInt(input.value) + 1;
+    }
+
+    function decrementQty(id) {
+        const input = document.getElementById('qty-' + id);
+        if (parseInt(input.value) > 1) {
+            input.value = parseInt(input.value) - 1;
+        }
+    }
+
+    function addToCart(id) {
+        const qty = document.getElementById('qty-' + id).value;
+        window.location.href = `/cart/add/${id}/?qty=${qty}`;
+    }
+</script>
+{% endblock %}

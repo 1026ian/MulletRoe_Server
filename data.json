@@ -1,0 +1,296 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "ian1026",
+    "last_login": "2026-01-05T11:00:00Z",
+    "is_superuser": false,
+    "username": "h94ian",
+    "first_name": "Ian",
+    "last_name": "Tsai",
+    "email": "h94ian@gmail.com",
+    "is_staff": false,
+    "is_active": false,
+    "date_joined": "2026-01-05T11:00:00Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$cvLVey33RedLytjOsUnvPw$7tTn/to2gCbXufXoLtTBvukmIMnCkd07rokgDW8oCGg=",
+    "last_login": "2026-01-05T15:22:48.657Z",
+    "is_superuser": false,
+    "username": "Ian8787",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-05T09:20:11.765Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$UTbtCH3Ix77fCymhVe2cuA$uxRlhkkTHiClagwyAfcg8qqvPfdfTkOdl0mFbVD/0YQ=",
+    "last_login": "2026-01-13T09:52:46.988Z",
+    "is_superuser": true,
+    "username": "Ian123",
+    "first_name": "蔡宏昱",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-13T07:02:08.305Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$5Ye0KtqV5XK2OMD6UF0cgU$fxBSA4BR+QDQ0Hr7hKLG9x5HR9rZO08zq+8tHXX5rz8=",
+    "last_login": "2026-01-13T09:20:38.133Z",
+    "is_superuser": false,
+    "username": "ian1026",
+    "first_name": "ian",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-13T09:20:37.173Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "web.product",
+  "pk": 1,
+  "fields": {
+    "name": "小可愛單片",
+    "price": 400,
+    "image_path": "images/product/6_krwzs6g.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 2,
+  "fields": {
+    "name": "小可愛秤一斤",
+    "price": 2100,
+    "image_path": "images/product/6.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 3,
+  "fields": {
+    "name": "炙燒小可愛單片",
+    "price": 400,
+    "image_path": "images/product/5.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 4,
+  "fields": {
+    "name": "炙燒小可愛秤一斤",
+    "price": 2100,
+    "image_path": "images/product/5.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 5,
+  "fields": {
+    "name": "4 兩烏魚子單片",
+    "price": 550,
+    "image_path": "images/product/3.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 6,
+  "fields": {
+    "name": "4 兩烏魚子秤一斤 \\n (約 3~4 片)",
+    "price": 2200,
+    "image_path": "images/product/3.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 7,
+  "fields": {
+    "name": "5 兩烏魚子單片",
+    "price": 800,
+    "image_path": "images/product/3.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 8,
+  "fields": {
+    "name": "5 兩烏魚子秤一斤 \\n (約 3 片)",
+    "price": 2500,
+    "image_path": "images/product/3.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 9,
+  "fields": {
+    "name": "一口吃 150 克禮盒",
+    "price": 600,
+    "image_path": "images/product/1.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 10,
+  "fields": {
+    "name": "一口吃 100 克 \\n (三包優惠 $1100)",
+    "price": 400,
+    "image_path": "images/product/2.jpg"
+  }
+},
+{
+  "model": "web.product",
+  "pk": 11,
+  "fields": {
+    "name": "蒲燒鰻禮盒 \\n (一公斤)",
+    "price": 1500,
+    "image_path": "images/product/4.jpg"
+  }
+},
+{
+  "model": "web.order",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "Ian123"
+    ],
+    "receiver_name": "蔡宏昱",
+    "receiver_phone": "0978278508",
+    "address": "453135",
+    "payment_name": "",
+    "payment_phone": "",
+    "account_last_5": "",
+    "total_price": 4600,
+    "state": "已完成",
+    "paid": true,
+    "created_date": "2026-01-13T07:15:18.142Z"
+  }
+},
+{
+  "model": "web.order",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "Ian123"
+    ],
+    "receiver_name": "蔡宏昱",
+    "receiver_phone": "0978278508",
+    "address": "高雄市鳳山區南成街",
+    "payment_name": "",
+    "payment_phone": "",
+    "account_last_5": "",
+    "total_price": 950,
+    "state": "已完成",
+    "paid": true,
+    "created_date": "2026-01-13T07:21:25.753Z"
+  }
+},
+{
+  "model": "web.order",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "Ian123"
+    ],
+    "receiver_name": "蔡宏昱",
+    "receiver_phone": "0978278508",
+    "address": "高雄市鳳山區南成街",
+    "payment_name": "蔡宏昱",
+    "payment_phone": "0978278508",
+    "account_last_5": "55555",
+    "total_price": 2100,
+    "state": "已完成",
+    "paid": true,
+    "created_date": "2026-01-13T07:52:41.444Z"
+  }
+},
+{
+  "model": "web.orderitem",
+  "pk": 2,
+  "fields": {
+    "order": 2,
+    "product": 2,
+    "price": 2100,
+    "quantity": 1
+  }
+},
+{
+  "model": "web.orderitem",
+  "pk": 3,
+  "fields": {
+    "order": 2,
+    "product": 8,
+    "price": 2500,
+    "quantity": 1
+  }
+},
+{
+  "model": "web.orderitem",
+  "pk": 4,
+  "fields": {
+    "order": 3,
+    "product": 1,
+    "price": 400,
+    "quantity": 1
+  }
+},
+{
+  "model": "web.orderitem",
+  "pk": 5,
+  "fields": {
+    "order": 3,
+    "product": 5,
+    "price": 550,
+    "quantity": 1
+  }
+},
+{
+  "model": "web.orderitem",
+  "pk": 6,
+  "fields": {
+    "order": 4,
+    "product": 2,
+    "price": 2100,
+    "quantity": 1
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "Ian123"
+    ],
+    "phone_number": "0978278508"
+  }
+},
+{
+  "model": "accounts.profile",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "ian1026"
+    ],
+    "phone_number": "0978278508"
+  }
+}
+]

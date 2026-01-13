@@ -1,0 +1,263 @@
+body {
+    margin: 0;
+    font-family: "Noto Sans TC", sans-serif;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.logo {
+    height: 30px;
+    margin-right: 30px;
+}
+
+.hero img {
+    width: 100%;
+    max-height: 450px;
+    height: auto;
+    object-fit: contain;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 56px 24px;
+}
+
+.products>.product {
+    padding: 40px !important;
+    border-radius: 20px !important;
+    background: #fff !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.products>.product>img {
+    width: 100% !important;
+    height: 250px !important;
+    object-fit: cover !important;
+    border-radius: 12px !important;
+    display: block !important;
+}
+
+.products>.product>h3 {
+    font-size: 20px !important;
+    margin: 20px 0 !important;
+}
+
+.products>.product>p {
+    color: #9b1c20 !important;
+    font-weight: 700 !important;
+    margin-bottom: 20px !important;
+}
+
+/* ============================================= 通用按鈕 ============================================= */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 140px;
+    height: 42px;
+    padding: 0 24px;
+
+    background-color: #9b1c20;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+
+    border-radius: 21px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+/* hover 效果 */
+.btn-primary:hover {
+    background-color: #b82428;
+    box-shadow: 0 6px 16px rgba(155, 28, 32, 0.35);
+    transform: translateY(-2px);
+}
+
+/* 點擊時 */
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(155, 28, 32, 0.25);
+}
+
+.product {
+    width: 220px;
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.product img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    margin-bottom: 12px;
+}
+
+.product h3 {
+    font-size: 15px;
+    margin: 8px 0;
+}
+
+.product p {
+    color: #9b1c20;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* ============================================= Navbar ============================================= */
+.site-header {
+    background: #ffffff;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px 32px;
+    /* 整體高度變大 */
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo 放大 */
+.nav-logo img {
+    height: 72px;
+    /* 原本 48 → 72 */
+    display: block;
+}
+
+/* 中間選單 */
+.nav-menu {
+    display: flex;
+    gap: 48px;
+    /* 間距也拉開 */
+}
+
+.nav-menu a {
+    position: relative;
+    font-size: 20px;
+    /* 原本 15 → 20 */
+    font-weight: 500;
+    color: #222;
+    text-decoration: none;
+    letter-spacing: 2px;
+    /* 大字一定要配字距 */
+    padding: 8px 0;
+}
+
+/* hover 底線動畫 */
+.nav-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 0;
+    height: 3px;
+    /* 底線變粗 */
+    background: #9b1c20;
+    transition: width 0.3s ease;
+}
+
+.nav-menu a:hover::after {
+    width: 100%;
+}
+
+/* 右側功能 */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-link {
+    font-size: 18px;
+    text-decoration: none;
+    color: #444;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+    background: #f5f5f5;
+    color: #9b1c20;
+}
+
+/* 購物車 */
+.nav-cart {
+    width: 48px;
+    /* 原本 36 → 48 */
+    height: 48px;
+    border-radius: 50%;
+    background: #9b1c20;
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+    font-size: 20px;
+    /* icon 也一起放大 */
+    transition: background 0.25s ease;
+}
+
+.nav-cart:hover {
+    background: #b82428;
+}
+
+/* ============================================= login form inputs ============================================= */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #9b1c20;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+}

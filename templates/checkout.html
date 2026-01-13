@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div
+    style="max-width: 800px; margin: 60px auto; padding: 28px; background: #fff; border-radius: 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.08);">
+    <h2 style="margin: 0 0 18px 0; text-align: center;">結帳確認</h2>
+
+    <!-- 訂單摘要 -->
+    <h3 style="margin-bottom: 12px; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px;">1. 訂單摘要</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+        <thead>
+            <tr style="border-bottom: 1px solid #eee;">
+                <th style="padding: 8px; text-align: left;">商品</th>
+                <th style="padding: 8px; text-align: center;">數量</th>
+                <th style="padding: 8px; text-align: right;">小計</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px 8px;">{{ item.product.name|replace_newline }}</td>
+                <td style="padding: 12px 8px; text-align: center;">{{ item.quantity }}</td>
+                <td style="padding: 12px 8px; text-align: right;">NT$ {{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" style="padding: 16px 8px; text-align: right; font-weight: bold;">總計</td>
+                <td style="padding: 16px 8px; text-align: right; font-weight: bold; color: #9b1c20; font-size: 18px;">
+                    NT$ {{ grand_total }}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <!-- 收件資訊表單 -->
+    <h3 style="margin-bottom: 12px; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px;">2. 收件人資訊</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">收件人姓名</label>
+            <input type="text" name="receiver_name" required value="{{ user.first_name }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">收件人電話</label>
+            <input type="text" name="receiver_phone" required value="{{ user.profile.phone_number }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">收件地址</label>
+            <input type="text" name="address" required placeholder="請輸入詳細地址"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <!-- 付款資訊表單 -->
+        <h3 style="margin-bottom: 12px; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px;">3. 付款資訊
+        </h3>
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">付款人姓名</label>
+            <input type="text" name="payment_name" required value="{{ user.first_name }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">付款人電話</label>
+            <input type="text" name="payment_phone" required value="{{ user.profile.phone_number }}"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="margin-bottom: 24px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">帳號末五碼</label>
+            <input type="text" name="account_last_5" required placeholder="請輸入匯款帳號後5碼" maxlength="5"
+                style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+
+        <div style="text-align: right; display: flex; justify-content: space-between; align-items: center;">
+            <a href="{% url 'cart_detail' %}" style="text-decoration: none; color: #666;">← 返回購物車</a>
+            <button type="submit" class="btn-primary" style="min-width: 200px;">確認結帳</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

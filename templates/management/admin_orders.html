@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div style="max-width: 1400px; margin: 40px auto; padding: 0 20px;">
+    <h1 style="color: #9b1c20; margin-bottom: 30px;">管理者後台</h1>
+
+    {% include "management/admin_nav.html" %}
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="margin: 0;">訂單管理</h2>
+
+        <!-- 搜尋表單 -->
+        <form method="get" style="display: flex; gap: 10px;">
+            <input type="text" name="q" value="{{ query|default:'' }}" placeholder="搜尋訂單編號 / 收件人"
+                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; width: 250px;">
+            <button type="submit" class="btn-primary"
+                style="padding: 8px 16px; font-size: 14px; min-width: auto;">搜尋</button>
+            {% if query %}
+            <a href="{% url 'admin_orders' %}"
+                style="display: inline-block; padding: 8px 16px; background: #eee; color: #333; text-decoration: none; border-radius: 6px;">清除</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div
+        style="background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: #f8f9fa; border-bottom: 1px solid #eee;">
+                    <th style="padding: 16px; text-align: left; width: 80px;">#ID</th>
+                    <th style="padding: 16px; text-align: left;">日期</th>
+                    <th style="padding: 16px; text-align: left;">使用者 / 收件人</th>
+                    <th style="padding: 16px; text-align: right;">總金額</th>
+                    <th style="padding: 16px; text-align: center;">狀態</th>
+                    <th style="padding: 16px; text-align: center;">付款</th>
+                    <th style="padding: 16px; text-align: center; width: 220px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 16px;">{{ order.id }}</td>
+                    <td style="padding: 16px; font-size: 14px; color: #666;">
+                        {{ order.created_date|date:"Y-m-d H:i" }}
+                    </td>
+                    <td style="padding: 16px;">
+                        <div style="font-weight: 500;">{{ order.receiver_name }}</div>
+                        <div style="font-size: 13px; color: #666;">{{ order.user.username }}</div>
+                    </td>
+                    <td style="padding: 16px; text-align: right; font-weight: bold; color: #9b1c20;">
+                        NT$ {{ order.total_price }}
+                    </td>
+                    <td style="padding: 16px; text-align: center;">
+                        <span
+                            style="padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; 
+                            background: {% if order.state == '付款完成，盡快安排出貨' %}#e6fffa{% elif order.state == '等待賣家確認中' %}#fffaf0{% else %}#fff5f5{% endif %}; 
+                            color: {% if order.state == '付款完成，盡快安排出貨' %}#2c7a7b{% elif order.state == '等待賣家確認中' %}#dd6b20{% else %}#c53030{% endif %};">
+                            {{ order.state }}
+                        </span>
+                    </td>
+                    <td style="padding: 16px; text-align: center;">
+                        {% if order.paid %}
+                        <span style="color: #2c7a7b; font-weight: bold;">✔ 已付</span>
+                        {% else %}
+                        <span style="color: #c53030;">✘ 未付</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 16px; text-align: center;">
+                        <div style="display: flex; gap: 8px; justify-content: center;">
+                            <a href="{% url 'admin_order_edit' order.id %}"
+                                style="background: #3182ce; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 13px;">編輯</a>
+
+                            {% if order.state != '已完成' %}
+                            <form action="{% url 'admin_order_complete' order.id %}" method="post"
+                                onsubmit="return confirm('確定要將此訂單標記為已完成嗎？');">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    style="background: #38a169; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">完成</button>
+                            </form>
+                            {% endif %}
+
+                            <form action="{% url 'admin_order_delete' order.id %}" method="post"
+                                onsubmit="return confirm('確定要刪除這筆訂單嗎？');">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    style="background: #e53e3e; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px;">刪除</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" style="padding: 40px; text-align: center; color: #666;">沒有找到符合的訂單</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

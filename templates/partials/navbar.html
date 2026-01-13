@@ -1,0 +1,40 @@
+{% load static %}
+<header class="site-header">
+    <div class="nav-container">
+
+        <!-- Logo -->
+        <div class="nav-logo">
+            <a href="/">
+                <img src="{% static 'images/logo.jpg' %}" alt="logo">
+            </a>
+        </div>
+
+        <!-- 主選單 -->
+        <nav class="nav-menu">
+            <a href="{% url 'index' %}">首頁</a>
+            <a href="{% url 'about' %}">關於我們</a>
+            <a href="{% url 'contact' %}">聯絡我們</a>
+        </nav>
+
+        <!-- 右側功能 -->
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+            <span class="nav-link">嗨，{{ user.username }}</span>
+
+            <a href="{% url 'orders' %}" class="nav-link">我的訂單</a>
+
+            <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="nav-link logout-btn">
+                    登出
+                </button>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}" class="nav-link">會員登入</a>
+            {% endif %}
+
+            <a href="{% url 'cart_detail' %}" class="nav-cart">🛒</a>
+        </div>
+
+    </div>
+</header>

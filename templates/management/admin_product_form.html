@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} - 管理者後台{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
+    <a href="{% url 'admin_products' %}"
+        style="color: #666; text-decoration: none; display: inline-block; margin-bottom: 20px;">← 返回商品列表</a>
+
+    <div style="background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <h1 style="color: #9b1c20; margin-top: 0; margin-bottom: 30px;">{{ title }}</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">商品名稱</label>
+                <input type="text" name="name" value="{{ product.name|default:'' }}" required
+                    placeholder="例如：御品烏魚子 (五兩)"
+                    style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">價格 (NT$)</label>
+                <input type="number" name="price" value="{{ product.price|default:'' }}" required
+                    style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; -moz-appearance: textfield;">
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">商品圖片</label>
+                {% if product.image_path %}
+                <div style="margin-bottom: 12px;">
+                    <span style="font-size: 13px; color: #888;">目前圖片：</span><br>
+                    <img src="{% static product.image_path %}"
+                        style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; margin-top: 5px;">
+                </div>
+                {% endif %}
+                <input type="file" name="image_file" {% if not product %}required{% endif %} accept="image/*"
+                    style="width: 100%; padding: 10px; border: 1px dotted #ccc; border-radius: 8px; background: #fafafa;">
+                <p style="font-size: 13px; color: #888; margin-top: 8px;">※ 圖片將自動儲存至系統目錄中，無需手動輸入路徑</p>
+            </div>
+
+            <div style="display: flex; gap: 15px;">
+                <button type="submit" class="btn-primary" style="flex: 1; height: 50px; font-size: 16px;">儲存設定</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

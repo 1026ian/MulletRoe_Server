@@ -1,0 +1,12 @@
+<div style="margin-bottom: 30px; border-bottom: 1px solid #eee; display: flex; gap: 20px; padding-bottom: 10px;">
+    <a href="{% url 'admin_orders' %}"
+        style="text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; 
+              {% if request.resolver_match.url_name == 'admin_orders' %}background: #9b1c20; color: #fff;{% else %}color: #666; background: #f5f5f5;{% endif %}">
+        📦 訂單管理
+    </a>
+    <a href="{% url 'admin_products' %}"
+        style="text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; 
+              {% if 'admin_product' in request.resolver_match.url_name %}background: #9b1c20; color: #fff;{% else %}color: #666; background: #f5f5f5;{% endif %}">
+        🏷️ 商品管理
+    </a>
+</div>

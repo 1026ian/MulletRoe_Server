@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}聯絡我們 - 紀家本產烏魚子{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 80px auto; padding: 0 40px;">
+    <div
+        style="display: flex; align-items: center; gap: 40px; min-height: 60vh; background: #f5f2ef; padding: 60px; border-radius: 32px; border: 1px solid #e8e3de;">
+        <!-- 左側：聯絡方式 -->
+        <div style="flex: 1;">
+            <h1 style="font-size: 36px; color: #9b1c20; margin-bottom: 30px; font-weight: 700;">聯絡我們</h1>
+            <div style="line-height: 2; color: #444; font-size: 18px;">
+                <p style="margin-bottom: 15px;">
+                    <strong style="color: #333; font-size: 25px;">紀家本產烏魚子</strong>
+                </p>
+                <p style="margin-bottom: 15px;">
+                    <strong style="color: #333;">電話：</strong> 0933-313-653
+                </p>
+                <p style="margin-bottom: 15px;">
+                    <strong style="color: #333;">地址：</strong> 雲林縣
+                </p>
+                <p style="margin-bottom: 15px;">
+                    <strong style="color: #333;">Line ID：</strong> @line
+                </p>
+                <p>
+                    <strong style="color: #333;">服務時間：</strong> 週一至週日 09:00 - 21:00
+                </p>
+                <p style="margin-top: 30px; font-size: 16px; color: #666; font-style: italic;">
+                    ※ 歡迎來電詢問或加入 Line 詢問相關問題。
+                </p>
+            </div>
+        </div>
+
+        <!-- 右側：名片圖片 -->
+        <div style="flex: 1;">
+            <div
+                style="border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid #eee;">
+                <img src="{% static 'images/名片.jpg' %}" alt="紀家本產烏魚子名片" style="width: 100%; display: block;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

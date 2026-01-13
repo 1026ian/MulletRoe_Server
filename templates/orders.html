@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 60px auto; padding: 28px;">
+
+    <!-- 匯款資訊區塊 -->
+    <div
+        style="background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 24px; margin-bottom: 30px; border: 1px solid #b82428;">
+        <h3 style="margin: 0 0 16px 0; color: #9b1c20; font-size: 20px; text-align: center;">💰 付款資訊</h3>
+        <p style="margin: 15px 5px; font-size: 18px;"><strong> 本公司採用匯款方式進行付款，請將款項匯款至以下帳號：</strong></p>
+        <div style="background: #fff5f5; padding: 16px; border-radius: 8px;">
+            <p style="margin: 8px 0; font-size: 16px;"><strong>銀行代碼：</strong>807 (永豐銀行)</p>
+            <p style="margin: 8px 0; font-size: 16px;"><strong>銀行帳號：</strong>005-018-6150328-9</p>
+            <p style="margin: 8px 0; font-size: 16px;"><strong>戶名：</strong>紀琇玉</p>
+            <hr style="border: 0; border-top: 1px dashed #dcb5b5; margin: 12px 0;">
+            <p style="margin: 0; font-size: 14px; color: #666;">※ 請使用結帳時輸入之末 5 碼銀行帳號進行匯款，否則將導致款項無法確認，若需更改匯款帳號請與我們聯繫。
+            </p>
+            <p style="margin: 0; font-size: 14px; color: #666;">※ 匯款完成後，請點擊訂單上的"付款完成"按鈕，經確認後我們會盡快為您出貨。</p>
+            <p style="margin: 0; font-size: 14px; color: #666;">※ 為求商品新鮮，海鮮食品售出不接受退貨，請確認後再進行下單。</p>
+        </div>
+    </div>
+
+    <h2 style="margin-bottom: 24px; text-align: center;">我的訂單紀錄</h2>
+
+    {% if orders %}
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+        {% for order in orders %}
+        <div
+            style="background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
+
+            <!-- 訂單標頭 Info -->
+            <div
+                style="background: #f8f9fa; padding: 16px 24px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <span style="font-weight: bold; color: #333;">訂單 #{{ order.id }}</span>
+                    <span style="margin: 0 8px; color: #ccc;">|</span>
+                    <span style="color: #666; font-size: 14px;">{{ order.created_date|date:"Y-m-d H:i" }}</span>
+                </div>
+                <div>
+                    {% if order.state == '等待付款中' %}
+                    <form action="{% url 'confirm_payment' order.id %}" method="post" style="display: inline-block;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-primary"
+                            style="background-color: #2c7a7b; padding: 4px 12px; font-size: 13px; min-width: auto; height: auto;">
+                            匯款完成
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    <span
+                        style="padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; 
+                            background: {% if order.state == '付款完成，盡快安排出貨' %}#e6fffa{% elif order.state == '等待賣家確認中' %}#fffaf0{% else %}#fff5f5{% endif %}; 
+                            color: {% if order.state == '付款完成，盡快安排出貨' %}#2c7a7b{% elif order.state == '等待賣家確認中' %}#dd6b20{% else %}#c53030{% endif %};">
+                        {{ order.state }}
+                    </span>
+                    <span style="margin-left: 12px; font-weight: bold; color: #9b1c20;">NT$ {{ order.total_price }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- 訂單內容 Items -->
+            <div style="padding: 20px 24px;">
+                <!-- 收件資訊摘要 -->
+                <div style="margin-bottom: 16px; font-size: 14px; color: #555;">
+                    <strong>收件人：</strong>{{ order.receiver_name }} <br>
+                    <strong>電話：</strong>{{ order.receiver_phone }} <br>
+                    <strong>地址：</strong>{{ order.address }}
+                </div>
+
+                <table style="width: 100%; font-size: 14px; border-collapse: collapse;">
+                    {% for item in order.items.all %}
+                    <tr style="border-bottom: 1px dashed #eee;">
+                        <td style="padding: 8px 0;">{{ item.product.name|replace_newline }}</td>
+                        <td style="padding: 8px 0; text-align: right; color: #666;">
+                            NT$ {{ item.price }} x {{ item.quantity }}
+                        </td>
+                        <td style="padding: 8px 0; text-align: right; font-weight: 500;">
+                            NT$ {{ item.subtotal }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="{% url 'index' %}" class="btn-primary">繼續購物</a>
+    </div>
+
+    {% else %}
+    <div
+        style="text-align: center; padding: 60px 0; background: #fff; border-radius: 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.08);">
+        <p style="margin-bottom: 24px; color: #666; font-size: 18px;">目前沒有訂單紀錄</p>
+        <a href="{% url 'index' %}" class="btn-primary">去逛逛</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

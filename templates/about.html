@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}關於我們 - 紀家本產烏魚子{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 60px auto; padding: 0 28px;">
+    <div
+        style="display: flex; align-items: center; gap: 60px; min-height: 60vh; background: #f5f2ef; padding: 60px; border-radius: 32px; border: 1px solid #e8e3de;">
+        <!-- 左側：故事內容 -->
+        <div style="flex: 1;">
+            <h1 style="font-size: 36px; color: #9b1c20; margin-bottom: 30px; font-weight: 700;">ㄧ份感恩，慢慢熟成的滋味</h1>
+            <div style="line-height: 1.8; color: #444; font-size: 18px;">
+                <p>
+                    49歲時的阿公被診斷為癌症第四期。<br>
+                    在醫師細心治療下，他奇蹟似地康復了。
+                </p>
+                <p>
+                    撿回一條命後，阿公心中只有一個念頭——<br>
+                    秉持著海口人純樸的精神想親手做出一份禮輕情意重的禮，<br>感謝救他的人。
+                </p>
+                <p>
+                    於是，他去跟師傅學做烏魚子。<br>
+                    從選卵、日曬到風乾，每一道工序都格外用心，<br>
+                    因為這不只是一份食品，而是一份感恩。
+                </p>
+                <p>
+                    這份心意，成了我們家族的起點。<br>
+                    今天的每一塊烏魚子，
+                    都承載著阿公對生命的珍惜，<br>
+                    以及對品質不妥協的堅持。
+                </p>
+            </div>
+        </div>
+
+        <!-- 右側：職人圖片 -->
+        <div style="flex: 1;">
+            <div
+                style="position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                <img src="{% static 'images/多人曬.jpg' %}" alt="職人曬製烏魚子"
+                    style="width: 100%; display: block; filter: contrast(1.05);">
+                <div
+                    style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.3)); height: 80px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

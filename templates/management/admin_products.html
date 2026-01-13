@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}商品管理 - 管理者後台{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+    <h1 style="color: #9b1c20; margin-bottom: 30px;">管理者後台</h1>
+
+    {% include "management/admin_nav.html" %}
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h2 style="margin: 0; font-size: 24px;">商品列表</h2>
+        <a href="{% url 'admin_product_add' %}" class="btn-primary" style="text-decoration: none;">➕ 新增商品</a>
+    </div>
+
+    <div style="background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background: #f8f9fa; border-bottom: 2px solid #eee;">
+                    <th style="padding: 16px;">圖片</th>
+                    <th style="padding: 16px;">商品名稱</th>
+                    <th style="padding: 16px;">價格 (NT$)</th>
+                    <th style="padding: 16px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in products %}
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 16px;">
+                        <img src="{% static p.image_path %}"
+                            style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;">
+                    </td>
+                    <td style="padding: 16px; font-weight: 600;">{{ p.name }}</td>
+                    <td style="padding: 16px; color: #9b1c20;">{{ p.price }}</td>
+                    <td style="padding: 16px;">
+                        <div style="display: flex; gap: 8px;">
+                            <a href="{% url 'admin_product_edit' p.id %}"
+                                style="background: #3182ce; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 500; display: inline-block;">編輯</a>
+                            <form action="{% url 'admin_product_delete' p.id %}" method="post" style="display: inline;"
+                                onsubmit="return confirm('確定要刪除此商品嗎？');">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    style="background: #e53e3e; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500;">刪除</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="padding: 40px; text-align: center; color: #888;">目前沒有商品</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
