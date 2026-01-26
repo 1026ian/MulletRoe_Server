@@ -23,11 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only")
-DEBUG = os.environ.get("DEBUG", "0") == "1"
+#DEBUG = os.environ.get("DEBUG", "0") == "1"
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "")
-ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS.split(",") if h.strip()] or (["*"] if DEBUG else [])
-
+#ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "")
+#ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS.split(",") if h.strip()] or (["*"] if DEBUG else [])
+ALLOWED_HOSTS = ["*" ]
 
 
 # Application definition
