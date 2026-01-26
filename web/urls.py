@@ -1,4 +1,4 @@
-from .views import index, orders, cart_add, cart_remove, cart_detail, checkout, confirm_payment, admin_orders, admin_order_edit, admin_order_delete, admin_order_complete, about, contact, admin_products, admin_product_add, admin_product_edit, admin_product_delete
+from .views import index, orders, cart_add, cart_remove, cart_update_options, cart_detail, checkout, confirm_payment, admin_orders, admin_order_edit, admin_order_delete, admin_order_complete, about, contact, admin_products, admin_product_add, admin_product_edit, admin_product_delete
 from django.urls import path
 
 urlpatterns = [
@@ -8,6 +8,7 @@ urlpatterns = [
     path("orders/", orders, name="orders"),
     path("cart/add/<int:product_id>/", cart_add, name="cart_add"),
     path("cart/remove/<int:product_id>/", cart_remove, name="cart_remove"),
+    path("cart/update_options/<int:product_id>/", cart_update_options, name="cart_update_options"),
     path("cart/", cart_detail, name="cart_detail"),
     path("checkout/", checkout, name="checkout"),
     path("orders/confirm/<int:order_id>/", confirm_payment, name="confirm_payment"),

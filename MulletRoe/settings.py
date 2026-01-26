@@ -29,6 +29,7 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "")
 ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS.split(",") if h.strip()] or (["*"] if DEBUG else [])
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -70,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = '烏魚子.wsgi.application'
+WSGI_APPLICATION = 'MulletRoe.wsgi.application'
 
 
 # Database

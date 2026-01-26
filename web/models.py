@@ -25,6 +25,7 @@ class Order(models.Model):
     account_last_5 = models.CharField(max_length=5, default='')
 
     total_price = models.IntegerField()
+    shipping_fee = models.IntegerField(default=200)
     state = models.CharField(max_length=20, default='等待付款中')
     paid = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -37,6 +38,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price = models.IntegerField()
     quantity = models.IntegerField(default=1)
+    gift_box = models.CharField(max_length=20, null=True, blank=True)
+    paper_bag = models.CharField(max_length=20, null=True, blank=True)
 
     def __str__(self):
         return f"{self.id} - {self.product.name}"

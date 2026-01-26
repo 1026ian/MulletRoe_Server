@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q
 from .models import Product, Order, OrderItem
 
+SHIPPING_FEE = 200
+
 def index(request):
     if request.user.is_superuser:
         return redirect('admin_orders')
@@ -43,6 +45,17 @@ def cart_add(request, product_id):
     return redirect('index')
 
 @login_required
+def cart_update_options(request, product_id):
+    if request.method == 'POST':
+        cart = request.session.get('cart', {})
+        product_id_str = str(product_id)
+        if product_id_str in cart:
+            cart[product_id_str]['gift_box'] = request.POST.get('gift_box')
+            cart[product_id_str]['paper_bag'] = request.POST.get('paper_bag')
+            request.session['cart'] = cart
+    return redirect('cart_detail')
+
+@login_required
 def cart_remove(request, product_id):
     cart = request.session.get('cart', {})
     product_id_str = str(product_id)
@@ -63,11 +76,21 @@ def cart_detail(request):
         cart_items.append({
             'product': product,
             'quantity': item['quantity'],
-            'subtotal': subtotal
+            'subtotal': subtotal,
+            'gift_box': item.get('gift_box'),
+            'paper_bag': item.get('paper_bag'),
         })
         grand_total += subtotal
         
-    return render(request, "cart.html", {'cart_items': cart_items, 'grand_total': grand_total})
+    # 計算運費：超過 6000 免運
+    current_shipping_fee = 0 if grand_total >= 6000 else SHIPPING_FEE
+        
+    return render(request, "cart.html", {
+        'cart_items': cart_items, 
+        'shipping_fee': current_shipping_fee,
+        'grand_total': grand_total + current_shipping_fee,
+        'item_total': grand_total
+    })
 
 @login_required
 def checkout(request):
@@ -90,7 +113,10 @@ def checkout(request):
         total_price = 0
         for product_id, item in cart.items():
             product = Product.objects.get(id=product_id)
-            total_price += int(item['quantity']) * product.price
+            total_price += item['quantity'] * product.price
+
+        # 計算運費：超過 6000 免運
+        current_shipping_fee = 0 if total_price >= 6000 else SHIPPING_FEE
             
         order = Order.objects.create(
             user=request.user,
@@ -100,7 +126,8 @@ def checkout(request):
             payment_name=payment_name,
             payment_phone=payment_phone,
             account_last_5=account_last_5,
-            total_price=total_price
+            total_price=total_price + current_shipping_fee,
+            shipping_fee=current_shipping_fee
         )
         
         # 建立訂單明細
@@ -110,7 +137,9 @@ def checkout(request):
                 order=order,
                 product=product,
                 price=product.price,
-                quantity=item['quantity']
+                quantity=item['quantity'],
+                gift_box=item.get('gift_box'),
+                paper_bag=item.get('paper_bag')
             )
             
         # 清空購物車
@@ -127,11 +156,21 @@ def checkout(request):
             cart_items.append({
                 'product': product,
                 'quantity': item['quantity'],
-                'subtotal': subtotal
+                'subtotal': subtotal,
+                'gift_box': item.get('gift_box'),
+                'paper_bag': item.get('paper_bag')
             })
             grand_total += subtotal
             
-        return render(request, "checkout.html", {'cart_items': cart_items, 'grand_total': grand_total})
+        # 計算運費：超過 6000 免運
+        current_shipping_fee = 0 if grand_total >= 6000 else SHIPPING_FEE
+            
+        return render(request, "checkout.html", {
+            'cart_items': cart_items, 
+            'shipping_fee': current_shipping_fee,
+            'grand_total': grand_total + current_shipping_fee,
+            'item_total': grand_total
+        })
 
 @login_required
 def confirm_payment(request, order_id):

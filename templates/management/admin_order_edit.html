@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
 <div
@@ -20,7 +21,8 @@
                 <label style="display: block; margin-bottom: 6px; font-weight: 500;">處理狀態</label>
                 <select name="state" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
                     {% for state_option in states %}
-                    <option value="{{ state_option }}" {% if order.state == state_option %}selected{% endif %}>{{ state_option }}</option>
+                    <option value="{{ state_option }}" {% if order.state==state_option %}selected{% endif %}>{{
+                        state_option }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -70,6 +72,49 @@
             <input type="text" name="account_last_5" value="{{ order.account_last_5 }}"
                 style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
         </div>
+
+        <!-- 訂單商品明細 -->
+        <h3 style="margin-bottom: 12px; font-size: 18px; border-bottom: 2px solid #eee; padding-bottom: 8px;">4. 訂單商品明細
+        </h3>
+        <table style="width: 100%; font-size: 14px; border-collapse: collapse; margin-bottom: 24px;">
+            <thead>
+                <tr style="border-bottom: 1px solid #eee; background: #f9f9f9;">
+                    <th style="padding: 10px; text-align: left;">商品名稱</th>
+                    <th style="padding: 10px; text-align: right;">單價</th>
+                    <th style="padding: 10px; text-align: center;">數量</th>
+                    <th style="padding: 10px; text-align: right;">小計</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr style="border-bottom: 1px dashed #eee;">
+                    <td style="padding: 12px 10px;">
+                        {{ item.product.name|replace_newline }}
+                        {% if item.gift_box or item.paper_bag %}
+                        <div style="font-size: 12px; color: #9b1c20; margin-top: 4px;">
+                            {% if item.gift_box %}[{{ item.gift_box }}] {% endif %}
+                            {% if item.paper_bag %}[{{ item.paper_bag }}]{% endif %}
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td style="padding: 12px 10px; text-align: right;">NT$ {{ item.price }}</td>
+                    <td style="padding: 12px 10px; text-align: center;">{{ item.quantity }}</td>
+                    <td style="padding: 12px 10px; text-align: right;">NT$ {{ item.subtotal }}</td>
+                </tr>
+                {% endfor %}
+                <tr style="border-top: 1px solid #eee;">
+                    <td colspan="3" style="padding: 12px 10px; text-align: right; color: #666;">運費</td>
+                    <td style="padding: 12px 10px; text-align: right; color: #666;">NT$ {{ order.shipping_fee }}</td>
+                </tr>
+                <tr style="border-top: 2px solid #eee;">
+                    <td colspan="3" style="padding: 12px 10px; text-align: right; font-weight: bold; font-size: 16px;">
+                        總計金額</td>
+                    <td
+                        style="padding: 12px 10px; text-align: right; font-weight: bold; font-size: 18px; color: #9b1c20;">
+                        NT$ {{ order.total_price }}</td>
+                </tr>
+            </tbody>
+        </table>
 
         <div style="text-align: right; display: flex; justify-content: flex-end; gap: 16px;">
             <a href="{% url 'admin_orders' %}"

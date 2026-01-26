@@ -6,6 +6,7 @@
 <div
     style="max-width: 800px; margin: 60px auto; padding: 28px; background: #fff; border-radius: 16px; box-shadow: 0 10px 24px rgba(0,0,0,0.08);">
     <h2 style="margin: 0 0 18px 0; text-align: center;">我的購物車</h2>
+
     {% if cart_items %}
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
         <thead>
@@ -20,36 +21,112 @@
         <tbody>
             {% for item in cart_items %}
             <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 16px 12px;">{{ item.product.name|replace_newline }}</td>
-                <td style="padding: 16px 12px; text-align: right;">NT$ {{ item.product.price }}</td>
-                <td style="padding: 16px 12px; text-align: center;">{{ item.quantity }}</td>
-                <td style="padding: 16px 12px; text-align: right;">NT$ {{ item.subtotal }}</td>
-                <td style="padding: 16px 12px; text-align: center;">
-                    <a href="{% url 'cart_remove' item.product.id %}"
-                        style="color: #b00020; text-decoration: none; font-size: 14px;">✕ 移除</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3" style="padding: 24px 12px; text-align: right; font-weight: bold; font-size: 18px;">總計
-                </td>
-                <td colspan="2"
-                    style="padding: 24px 12px; text-align: right; font-weight: bold; font-size: 20px; color: #9b1c20;">
-                    NT$ {{ grand_total }}</td>
-            </tr>
-        </tfoot>
-    </table>
-    <div style="text-align: right; display: flex; justify-content: flex-end; gap: 16px; align-items: center;">
-        <a href="{% url 'index' %}" style="text-decoration: none; color: #666; font-size: 15px;">← 繼續購物</a>
-        <a href="{% url 'checkout' %}" class="btn-primary" style="min-width: 180px;">前往結帳</a>
-    </div>
-    {% else %}
-    <div style="text-align: center; padding: 40px 0;">
-        <p style="margin-bottom: 24px; color: #666; font-size: 18px;">您的購物車是空的</p>
-        <a href="{% url 'index' %}" class="btn-primary">去逛逛</a>
-    </div>
-    {% endif %}
+                <td style="padding: 16px 12px;">
+                    {{ item.product.name|replace_newline }}
+
+                    {# 只有特定商品 ID 才顯示包裝選項 #}
+                    {% if item.product.id >= 5 and item.product.id <= 8 %} <div
+                        style="margin-top: 10px; padding: 12px; background: #fff8f8; border-radius: 8px; border: 1px solid #ffebeb; font-size: 14px;">
+                        <form action="{% url 'cart_update_options' item.product.id %}" method="post"
+                            class="options-form" id="options-form-{{ item.product.id }}">
+                            {% csrf_token %}
+                            <div style="margin-bottom: 8px;">
+                                <strong style="color: #9b1c20;">禮盒選項：</strong><br>
+                                <label style="margin-right: 15px;">
+                                    <input type="radio" name="gift_box" value="需要禮盒" required
+                                        onchange="this.form.submit()" {% if item.gift_box == '需要禮盒' %}checked{% endif %}>
+                                    需要禮盒
+                                </label>
+                                <label>
+                                    <input type="radio" name="gift_box" value="不需要禮盒" required
+                                        onchange="this.form.submit()" {% if item.gift_box == '不需要禮盒' %}checked{% endif %}>
+                                    不需要禮盒
+                                </label>
+                            </div>
+                            <div>
+                                <strong style="color: #9b1c20;">提袋選項：</strong><br>
+                                <label style="margin-right: 15px;">
+                                    <input type="radio" name="paper_bag" value="需要提袋" required
+                                        onchange="this.form.submit()" {% if item.paper_bag == '需要提袋' %}checked{% endif %}>
+                                    需要提袋
+                                </label>
+                                <label>
+                                    <input type="radio" name="paper_bag" value="不需要提袋" required
+                                        onchange="this.form.submit()" {% if item.paper_bag == '不需要提袋' %}checked{% endif %}> 不需要提袋
+                                </label>
+                            </div>
+                        </form>
+</div>
+{% endif %}
+</td>
+<td style="padding: 16px 12px; text-align: right;">NT$ {{ item.product.price }}</td>
+<td style="padding: 16px 12px; text-align: center;">{{ item.quantity }}</td>
+<td style="padding: 16px 12px; text-align: right;">NT$ {{ item.subtotal }}</td>
+<td style="padding: 16px 12px; text-align: center;">
+    <a href="{% url 'cart_remove' item.product.id %}" style="color: #b00020; text-decoration: none; font-size: 14px;">✕
+        移除</a>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+<tfoot>
+    <tr style="border-top: 1px solid #eee;">
+        <td colspan="3"
+            style="padding: 12px 12px; text-align: right; font-weight: normal; font-size: 16px; color: #666;">
+            運費 {% if item_total >= 6000 %}<span
+                style="color: #38a169; font-size: 14px; margin-left: 8px;">(超過6000免運)</span>{% endif %}
+        </td>
+        <td colspan="2"
+            style="padding: 12px 12px; text-align: right; font-weight: normal; font-size: 16px; color: #666;">NT$
+            {{ shipping_fee }}</td>
+    </tr>
+    <tr>
+        <td colspan="3" style="padding: 12px 12px 24px 12px; text-align: right; font-weight: bold; font-size: 18px;">總計
+        </td>
+        <td colspan="2"
+            style="padding: 12px 12px 24px 12px; text-align: right; font-weight: bold; font-size: 20px; color: #9b1c20;">
+            NT$ {{ grand_total }}</td>
+    </tr>
+</tfoot>
+</table>
+
+<div style="text-align: right; display: flex; justify-content: flex-end; gap: 16px; align-items: center;">
+    <a href="{% url 'index' %}" style="text-decoration: none; color: #666; font-size: 15px;">← 繼續購物</a>
+    <a href="javascript:void(0);" onclick="validateAndCheckout()" class="btn-primary" style="min-width: 180px;">前往結帳</a>
+</div>
+
+<script>
+    function validateAndCheckout() {
+        const itemsRequiringOptions = document.querySelectorAll('.options-form');
+
+        if (itemsRequiringOptions.length === 0) {
+            window.location.href = "{% url 'checkout' %}";
+            return;
+        }
+
+        let allValid = true;
+        itemsRequiringOptions.forEach(form => {
+            const giftBox = form.querySelector('input[name="gift_box"]:checked');
+            const paperBag = form.querySelector('input[name="paper_bag"]:checked');
+
+            if (!giftBox || !paperBag) {
+                allValid = false;
+            }
+        });
+
+        if (!allValid) {
+            alert('請先選擇「禮盒」與「提袋」選項，謝謝！');
+        } else {
+            window.location.href = "{% url 'checkout' %}";
+        }
+    }
+</script>
+
+{% else %}
+<div style="text-align: center; padding: 40px 0;">
+    <p style="margin-bottom: 24px; color: #666; font-size: 18px;">您的購物車是空的</p>
+    <a href="{% url 'index' %}" class="btn-primary">去逛逛</a>
+</div>
+{% endif %}
 </div>
 {% endblock %}
